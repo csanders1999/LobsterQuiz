@@ -17,67 +17,79 @@
 # Add comments to make your script easy to understand
 # Be creative and make sure it runs.
 
+# Question class with prompt and answer
 class Question:
      def __init__(self, prompt, answer):
           self.prompt = prompt
           self.answer = answer
 
-prompts = ["Easy ","Easy ","Easy ","Easy ","Easy ","Easy ","Easy ","Easy ","Easy ","Easy "]
+# List of question prompts
+prompts = ["What color is lobster's blood? ","Where are lobster's teeth located? ","What do lobster's taste with? ","What state's university has a lobster institute?  ","What year did the beach-party anthem 'Rock Lobster' come out?  ","In what show did one of the main characters reasure their friend by saying, 'but she’s your lobster.'? ","Lobsters mate for life. True or False? ","Where is a lobster's brain located? ","Lobsters scream when you boil them. True or False? ","In what show is the show 'Bring in the dancing lobsters' from? ", "When it comes to mating, do males (M) or females (F) make the first move? ", "What are the red things in cooked lobster? ", "What ball were their shells once used to make? ", "They were once prison food. True or False?", "Lobsters are cannibals. True or False?", "How many grams of protein (per cup) is lobster meat? ", "Where do lobsters pee out of? ", "What are lobster's eggs called? ", "What is the maximum number of lobsters you can hunt at night? ", "What is the name of the lifeguard on SpongeBob SquarePants? "]
+
+# Prompts in dictionary form with number:question key:value pairs
 prompts_dict = {n: prompts[n] for n in range(len(prompts))}
 
+# Dictionary with Question objects (prompts and possible correct answers)
 questions = [
-     Question(prompts_dict.get(1), "a"),
-     Question(prompts_dict.get(2), "b"),
-     Question(prompts_dict.get(3), "a"),
-     Question(prompts_dict.get(4), "a"),
-     Question(prompts_dict.get(5), "b"),
-     Question(prompts_dict.get(6), "a"),
-     Question(prompts_dict.get(7), "a"),
-     Question(prompts_dict.get(8), "b"),
-     Question(prompts_dict.get(9), "a"),
-     Question(prompts_dict.get(10), "a"),
-     Question(prompts_dict.get(11), "a"),
-     Question(prompts_dict.get(12), "b"),
-     Question(prompts_dict.get(13), "a"),
-     Question(prompts_dict.get(14), "a"),
-     Question(prompts_dict.get(15), "b"),
-     Question(prompts_dict.get(16), "a"),
-     Question(prompts_dict.get(17), "a"),
-     Question(prompts_dict.get(18), "b"),
-     Question(prompts_dict.get(19), "a"),
-     Question(prompts_dict.get(20), "a"),
+     Question(prompts_dict.get(0), ["clear", "colorless"]),
+     Question(prompts_dict.get(1), ["stomach", "their stomach"]),
+     Question(prompts_dict.get(2), ["legs", "their legs", "leg", "their legs"]),
+     Question(prompts_dict.get(3), ["Maine", "maine"]),
+     Question(prompts_dict.get(4), ["1979"]),
+     Question(prompts_dict.get(5), ["Friends", "friends", "Friend's", "friend's"]),
+     Question(prompts_dict.get(6), ["False. A male lobster actually mated with an entire harem of female lobsters one at a time in flings that last about two weeks each.", "false"]),
+     Question(prompts_dict.get(7), ["Throat", "their throat", "throat"]),
+     Question(prompts_dict.get(8), ["False. Lobsters have no vocal cords. The sound one may hear is actually steam escaping from the shell as the lobster cooks.", "false"]),
+     Question(prompts_dict.get(9), ["The Amanda Show", "amanda show", "the amanda show" ]),
+     Question(prompts_dict.get(10), ["Females", "f","females", "girls"]),
+     Question(prompts_dict.get(11), ["eggs", "their eggs"]),
+     Question(prompts_dict.get(12), ["golf balls", "golf"]),
+     Question(prompts_dict.get(13), ["True", "true", "t"]),
+     Question(prompts_dict.get(14), ["True", "true", "t"]),
+     Question(prompts_dict.get(15), ["28", "twenty eight", "twenty-eight"]),
+     Question(prompts_dict.get(16), ["their face", "face"]),
+     Question(prompts_dict.get(17), ["roe"]),
+     Question(prompts_dict.get(18), ["7", "seven"]),
+     Question(prompts_dict.get(19), ["Larry the Lobster", "larry", "larry lobster", "larry the lobster"]),
 ]
 
+# Length of game dictionary with length:[question objects depending on length]
 game_length = {
-'short': [questions[i] for i in range(0, 5)], # [1,2,3,4,5]
+'short': [questions[i] for i in range(0, 5)],
 'medium': [questions[i] for i in range(0, 10)],
 'long': [questions[i] for i in range(0, 20)],
 }
 
+# Function to calculate what to say to person based on score
 def final_score(score, length):
     if (score / length) >= 0.75:
         return "You are a lobster god!"
     elif (score / length) >= 0.5:
-        return "Nice job!"
+        return "Nice job! But the lobsters believe you could do better..."
     else:
         return "Keep studying your lobster facts..."
 
+# Function that runs quiz
 def run_quiz(questions):
      score = 0
      print("Welcome to Lobster Quiz! Let's see how well you know the best animal in the sea!")
-     while True:
-        length = input("What length would you like the quiz to be? (Short/Medium/Long): ")
+     while True: # Checking length input is Short, Medium, or Long
+        try:
+            length = input("What length would you like the quiz to be? (Short/Medium/Long): ")
+        except EOFError:
+            print ('Please choose between "Short", "Medium", or "Long". ')
+            continue
         if (length.lower()).strip() in ["short", "medium", "long"] :
            break
         else:
            print('Please choose between "Short", "Medium", or "Long". ')
-     for counter, question in enumerate(game_length.get(length),1):
-         answer = input("Question #" + str(counter) + ". " + question.prompt)
-         if (answer.lower()).strip() == question.answer:
+     for counter, question in enumerate(game_length.get(length),1): # enumerated for loop to go through all questions
+         answer = input("Question #" + str(counter) + ". " + question.prompt) # Asking question
+         if (answer.lower()).strip() in question.answer: # Seeing if correct
              print('Correct!')
              score+=1
          else:
-             print('Wrong! The correct answer was: ' + question.answer)
+             print('Wrong! The correct answer was: ' + question.answer[0])
      print("Thank you for playing! You got " + str(score)+ " out of " + str(len(game_length.get(length))) +". " + final_score(score, len(game_length.get(length))))
 
 if __name__== "__main__":
